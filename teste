@@ -1,0 +1,42 @@
+from django.shortcuts import render, redirect
+from django.contrib.auth.hashers import check_password
+# Importe o seu modelo customizado de usuário, ex: from .models import UsuarioCustomizado
+
+def login_view(request):
+    context = {}
+    
+    if request.method == 'POST':
+        usuario_input = request.POST.get('usuario')
+        senha_input = request.POST.get('senha')
+        
+        try:
+            # Buscando o usuário no banco de dados MySQL
+            # (Substitua 'UsuarioCustomizado' e os campos pelos nomes reais do seu projeto)
+            user = UsuarioCustomizado.objects.get(usuario=usuario_input)
+            
+            # Validação da senha (usando check_password se estiver criptografada, ou comparação direta)
+            if check_password(senha_input, user.senha):
+                
+                # Verificando o status_senha
+                if user.status_senha == 1:
+                    # Acesso liberado: redireciona para a página principal/dashboard
+                    return redirect('dashboard')
+                
+                elif user.status_senha == 2:
+                    context['modal_titulo'] = "Acesso Bloqueado"
+                    context['modal_mensagem'] = "Você está bloqueado nesse sistema, favor procurar o administrador."
+                
+                elif user.status_senha == 3:
+                    context['modal_titulo'] = "Troca de Senha"
+                    context['modal_mensagem'] = "É necessário trocar a sua senha."
+            else:
+                # Senha incorreta
+                context['modal_titulo'] = "Erro de Login"
+                context['modal_mensagem'] = "Usuário e senha incorretos."
+                
+        except UsuarioCustomizado.DoesNotExist:
+            # Usuário não encontrado
+            context['modal_titulo'] = "Erro de Login"
+            context['modal_mensagem'] = "Usuário e senha incorretos."
+            
+    return render(request, 'index.html', context)

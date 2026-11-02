@@ -1,0 +1,333 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Integrado - Dashboard</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">   
+   
+   
+</head>
+<body>
+
+    <div id="app-wrapper">
+        <!-- Sidebar Backdrop for Mobile Toggle -->
+        <div class="overlay" id="sidebar-overlay"></div>
+
+        <!-- ========================================================= -->
+        <!-- MENU LATERAL (SIDEBAR)                                    -->
+        <!-- ========================================================= -->
+        <aside id="sidebar">
+            <!-- Brand / Logo Header -->
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-icon">
+                    <i class="bi bi-hospital"></i>
+                </div>
+                <div class="sidebar-brand-text">
+                    INTRANET
+                    <span>Clínica Rio - Sistema de Gestão</span>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="sidebar-nav">
+                <div class="nav-category">Módulos do Sistema</div>
+
+                <a href="#admin" class="nav-link-custom active">
+                    <img src="{% static 'img/administracao.png' %}" alt="" height="32" width="32">
+                    <span>Administração do sistema</span>
+                </a>
+
+                <a href="#atendimento" class="nav-link-custom">
+                    <img src="{% static 'img/profissional.png' %}" alt="" height="32" width="32">
+                    <span>Atendimento Profissional</span>
+                </a>
+
+                <a href="#cadastro" class="nav-link-custom">
+                    <img src="{% static 'img/cadastro.png' %}" alt="" height="32" width="32">
+                    <span>Cadastro</span>
+                </a>
+
+                <a href="#contabilidade" class="nav-link-custom">
+                    <img src="{% static 'img/contabilidade.png' %}" alt="" height="32" width="32">
+                    <span>Contabilidade</span>
+                </a>
+
+                <a href="#faturamento" class="nav-link-custom">
+                   <img src="{% static 'img/faturamento.png' %}" alt="" height="32" width="32">
+                    <span>Faturamento</span>
+                </a>
+
+                <a href="#odontologia" class="nav-link-custom">
+                    <img src="{% static 'img/dentista.png' %}" alt="" height="32" width="32">
+                    <span>Odontologia</span>
+                </a>
+
+                <a href="#rh" class="nav-link-custom">
+                    <img src="{% static 'img/recursos-humanos.png' %}" alt="" height="32" width="32">
+                    <span>Recursos Humanos</span>
+                </a>
+
+                <a href="#recepcao" class="nav-link-custom">
+                    <img src="{% static 'img/recepcao.png' %}" alt="" height="32" width="32">
+                    <span>Recepção</span>
+                </a>
+            </nav>
+
+            <!-- Sidebar Bottom / User Profile & Logout -->
+            <div class="sidebar-footer">
+                <div class="user-profile-summary">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Avatar" class="user-avatar" onerror="this.src='https://placehold.co/100x100/0ea5e9/ffffff?text=User'">
+                    <div class="user-info">
+                        <p class="user-name">{{}}</p>
+                        <p class="user-role">{{}}</p>
+                    </div>
+                </div>
+                
+                    <a href="{% url 'core:logout_view' %}" class="btn-logout" id="logoutBtn">
+                        <img src="{% static 'img/dor-out.png' %}" alt="" height="32" width="32">
+                        <span>Logout</span>
+                    </a>
+                
+            </div>
+        </aside>
+
+        <!-- ========================================================= -->
+        <!-- ÁREA DE CONTEÚDO PRINCIPAL (MAIN CONTENT)                 -->
+        <!-- ========================================================= -->
+        <div id="main-content">
+            <!-- Top Navbar Bar -->
+            <header class="top-navbar">
+                <div class="d-flex align-items-center gap-3">
+                    <button class="btn btn-sm btn-light d-lg-none" id="sidebar-toggle">
+                        <i class="bi bi-list fs-5"></i>
+                    </button>
+                    <div class="search-box d-none d-md-block">
+                        <i class="bi bi-search"></i>
+                        <input type="text" class="form-control" placeholder="Buscar no sistema...">
+                    </div>
+                </div>
+
+                <div class="top-actions">
+                    <div class="icon-btn" title="Notificações">
+                        <i class="bi bi-bell"></i>
+                        <span class="badge-dot"></span>
+                    </div>
+                    <div class="icon-btn" title="Mensagens">
+                        <i class="bi bi-chat-dots"></i>
+                    </div>
+                    <div class="vr mx-1 d-none d-sm-block"></div>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="d-none d-sm-inline font-weight-medium fs-7">Unidade Central</span>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">Online</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Body -->
+            <main class="dashboard-container">
+                <!-- Welcome Banner -->
+                <div class="welcome-banner">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3 class="fw-bold mb-1">Bem-vindo ao Dashboard, Dra. Ana!</h3>
+                            <p class="mb-0 opacity-90">Confira o resumo geral do sistema de atendimento, recepção e faturamento para o dia de hoje.</p>
+                        </div>
+                        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                            <button class="btn btn-light text-primary font-weight-bold shadow-sm rounded-pill px-4">
+                                <i class="bi bi-plus-circle me-1"></i> Novo Atendimento
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metric / Quick Stats Cards -->
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="stat-card">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="text-secondary fs-7 fw-medium">Atendimentos Hoje</span>
+                                    <h3 class="fw-bold my-1">42</h3>
+                                    <span class="text-success fs-8"><i class="bi bi-arrow-up-right"></i> +12% vs. ontem</span>
+                                </div>
+                                <div class="stat-icon bg-primary-subtle text-primary">
+                                    <i class="bi bi-headset"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="stat-card">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="text-secondary fs-7 fw-medium">Agendamentos Recepção</span>
+                                    <h3 class="fw-bold my-1">128</h3>
+                                    <span class="text-success fs-8"><i class="bi bi-arrow-up-right"></i> +5% esta semana</span>
+                                </div>
+                                <div class="stat-icon bg-info-subtle text-info">
+                                    <i class="bi bi-calendar-event"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="stat-card">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="text-secondary fs-7 fw-medium">Faturamento do Mês</span>
+                                    <h3 class="fw-bold my-1">R$ 84,5k</h3>
+                                    <span class="text-success fs-8"><i class="bi bi-arrow-up-right"></i> +8% meta atingida</span>
+                                </div>
+                                <div class="stat-icon bg-success-subtle text-success">
+                                    <i class="bi bi-cash-coin"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="stat-card">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="text-secondary fs-7 fw-medium">Pacientes Odonto</span>
+                                    <h3 class="fw-bold my-1">18</h3>
+                                    <span class="text-warning fs-8"><i class="bi bi-dash"></i> Estável</span>
+                                </div>
+                                <div class="stat-icon bg-warning-subtle text-warning">
+                                    <i class="bi bi-heart-pulse"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Shortcuts -->
+                <h5 class="fw-bold mb-3">Acesso Rápido aos Módulos</h5>
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-md-3 col-lg-2">
+                        <a href="#recepcao" class="shortcut-card">
+                            <div class="shortcut-icon"><i class="bi bi-calendar-check"></i></div>
+                            <div class="fw-semibold">Recepção</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-2">
+                        <a href="#atendimento" class="shortcut-card">
+                            <div class="shortcut-icon"><i class="bi bi-headset"></i></div>
+                            <div class="fw-semibold">Atendimento</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-2">
+                        <a href="#odontologia" class="shortcut-card">
+                            <div class="shortcut-icon"><i class="bi bi-heart-pulse"></i></div>
+                            <div class="fw-semibold">Odontologia</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-2">
+                        <a href="#faturamento" class="shortcut-card">
+                            <div class="shortcut-icon"><i class="bi bi-cash-stack"></i></div>
+                            <div class="fw-semibold">Faturamento</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-2">
+                        <a href="#cadastro" class="shortcut-card">
+                            <div class="shortcut-icon"><i class="bi bi-person-vcard"></i></div>
+                            <div class="fw-semibold">Cadastro</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-2">
+                        <a href="#rh" class="shortcut-card">
+                            <div class="shortcut-icon"><i class="bi bi-people"></i></div>
+                            <div class="fw-semibold">RH</div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Charts & Activity Tables -->
+                <div class="row g-3">
+                    <!-- Chart Preview -->
+                    <div class="col-12 col-lg-8">
+                        <div class="glass-card p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div>
+                                    <h6 class="fw-bold mb-0">Evolução de Faturamento & Atendimentos</h6>
+                                    <small class="text-secondary">Visão geral comparativa dos últimos meses</small>
+                                </div>
+                                <select class="form-select form-select-sm w-auto">
+                                    <option>Últimos 6 Meses</option>
+                                    <option>Ano Atual</option>
+                                </select>
+                            </div>
+                            <div style="height: 280px;">
+                                <canvas id="billingChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity List -->
+                    <div class="col-12 col-lg-4">
+                        <div class="glass-card p-4 h-100">
+                            <h6 class="fw-bold mb-3">Atividades Recentes</h6>
+                            <div class="d-flex flex-column gap-3">
+                                <div class="d-flex align-items-start gap-3">
+                                    <div class="p-2 bg-primary-subtle text-primary rounded-circle">
+                                        <i class="bi bi-person-check fs-6"></i>
+                                    </div>
+                                    <div>
+                                        <p class="mb-0 fw-medium fs-7">Novo paciente cadastrado</p>
+                                        <small class="text-secondary">Recepção • Há 10 min</small>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-start gap-3">
+                                    <div class="p-2 bg-success-subtle text-success rounded-circle">
+                                        <i class="bi bi-receipt fs-6"></i>
+                                    </div>
+                                    <div>
+                                        <p class="mb-0 fw-medium fs-7">Fatura #4092 emitida</p>
+                                        <small class="text-secondary">Faturamento • Há 25 min</small>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-start gap-3">
+                                    <div class="p-2 bg-warning-subtle text-warning rounded-circle">
+                                        <i class="bi bi-calendar2-plus fs-6"></i>
+                                    </div>
+                                    <div>
+                                        <p class="mb-0 fw-medium fs-7">Consulta odonto agendada</p>
+                                        <small class="text-secondary">Odontologia • Há 40 min</small>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-start gap-3">
+                                    <div class="p-2 bg-info-subtle text-info rounded-circle">
+                                        <i class="bi bi-gear fs-6"></i>
+                                    </div>
+                                    <div>
+                                        <p class="mb-0 fw-medium fs-7">Atualização de permissões</p>
+                                        <small class="text-secondary">Admin • Há 1 hora</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> -->
+     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+     <script src="{% static 'js/dashboard.js' %}"></script>   
+          
+</body>
+</html>

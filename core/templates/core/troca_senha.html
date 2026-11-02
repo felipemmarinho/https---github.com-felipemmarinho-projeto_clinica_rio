@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | Clínica Rio</title>
+    <!-- Bootstrap 5 -->
+    <link href="{% static 'bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="{% static 'bootstrap/bootstrap-icons.min.css' %}" rel="stylesheet">
+
+    <!-- CSS da página -->
+    <link rel="stylesheet" href="{% static 'css/troca_senha.css' %}">    
+   
+</head>
+<body>
+    <main class="login-container">
+        <div class="login-card">            
+            <div class="logo-container">
+                <img  src="{% static 'logo/logo.png' %}" alt="Clínica Rio" class="logo">
+            </div>
+
+            <h1 class="login-title"> Troca de senha</h1>
+
+            <p class="login-subtitle"> Entre com as senha do usuário </p>            
+            <form method="POST" action="{% url 'core:troca_senha' %}">
+                {% csrf_token %}
+                <!-- USUÁRIO -->
+                <input type="hidden" id="id_usuario" name="id_usuario" value="{{id_usuario}}"> 
+               
+                 <div class="mb-3">
+                    <label for="password" class="form-label" >Senha </label>
+                    <div class="input-group-custom">                       
+                        <i class="bi bi-lock input-icon"></i>
+                        <input type="password" class="form-control form-control-custom" id="password" name="password" placeholder="Digite sua senha" autocomplete="current-password" required >
+                        <button type="button" class="password-toggle" id="togglePassword" aria-label="Mostrar senha">
+                            <i class="bi bi-eye"></i>
+                        </button>                        
+                    </div>
+                </div>
+                
+                <!-- SENHA -->
+                <div class="mb-3">
+                    <label for="password" class="form-label" >Senha </label>
+                    <div class="input-group-custom">                       
+                        <i class="bi bi-lock input-icon"></i>
+                        <input type="password" class="form-control form-control-custom" id="senha_repetida" name="senha_repetida" placeholder="Digite sua senha" autocomplete="current-password" required >
+                        <button type="button" class="password-toggle" id="togglesenha_repetida" aria-label="Mostrar senha">
+                            <i class="bi bi-eye"></i>
+                        </button>                        
+                    </div>
+                </div>
+                <!-- ===========  BOTÃO  =================== -->
+                <button type="submit" class="btn btn-login">                    
+                    <img src="{% static 'img/door_in.png' %}" alt="" height="24" width="24">
+                    Entrar
+                </button>
+            </form>
+            <!-- ==========================  RODAPÉ  ========================= -->
+            <div class="login-footer">
+                <strong>Clínica Rio</strong>
+                <br>
+                Sistema de Gestão
+            </div>
+        </div>
+    </main>
+    
+    <!-- Mostrar / ocultar senha -->
+   <!-- Modal do Bootstrap 5 -->
+    <div class="modal fade" id="alertaModal" tabindex="-1" aria-labelledby="alertaModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="alertaModalLabel">{{ modal_titulo|default:"Aviso" }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    {{ modal_mensagem }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <!-- Scripts corrigidos (src em vez de scr) -->
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'js/login.js' %}"></script>
+  <script src="{% static 'js/troca_senha.js' %}"></script>
+
+  {% if modal_mensagem %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var meuModal = new bootstrap.Modal(document.getElementById('alertaModal'));
+            meuModal.show();
+        });
+    </script>
+  {% endif %}
+  
+
+
+
+</body>
+
+</html>

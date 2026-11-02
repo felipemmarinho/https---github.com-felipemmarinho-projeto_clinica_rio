@@ -1,0 +1,198 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Sistema de Clínicas</title>
+  
+    
+  <!-- Google Fonts: Inter -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">  
+  <!-- Basecoat CSS -->
+  <link rel="stylesheet" href="{% static 'bootstrap/basecoat.cdn.min.css' %}">
+  
+  <!-- Shell CSS -->
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.min.css' %}">
+</head>
+<body>
+
+  <main class="auth-layout">
+    
+    <!-- Left Column: Medical Brand Showcase -->
+    <section class="brand-panel" aria-label="Apresentação Clínica Rio">
+      
+      <!-- Brand Logo & Name -->
+      <div class="brand-header">
+        <img src="{% static 'logo/logo.png' %}" alt="" width="200" height="160">
+        <div>
+          <h1 class="brand-name">Clínica Rio</h1>
+          <p class="brand-tagline">Medicina &amp; Tecnologia Integrada</p>
+        </div>
+      </div>
+
+      <!-- Welcome Content -->
+      <div class="brand-center">
+        <h2 class="brand-title">Bem-vindo ao Sistema de Clínicas</h2>
+        <p class="brand-subtitle">
+          Acesse sua conta para gerenciar pacientes, prontuários eletrônicos, laudos de exames e agendamentos clínicos em uma plataforma ágil e segura.
+        </p>
+
+        <ul class="features-list">
+          <li class="feature-item">
+            <span class="feature-icon-wrap" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </span>
+            <span>Prontuário eletrônico unificado e seguro</span>
+          </li>
+          <li class="feature-item">
+            <span class="feature-icon-wrap" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </span>
+            <span>Agendamento inteligente em tempo real</span>
+          </li>
+          <li class="feature-item">
+            <span class="feature-icon-wrap" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </span>
+            <span>Conformidade com a LGPD e padrões CFM</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Brand Footer -->
+      <div class="brand-footer">
+        <span>© 2025 Clínica Rio. Todos os direitos reservados.</span>
+        <span>v3.4.2</span>
+      </div>
+
+    </section>
+
+    <!-- Right Column: Login Form -->
+    <section class="form-panel" aria-label="Formulário de Acesso">
+      <div class="login-card">
+        
+        <div class="login-heading">
+          <h2>Acessar Conta</h2>
+          <p>Informe suas credenciais para entrar no sistema</p>
+        </div>
+
+        <!-- Feedback Alert -->
+        <div id="statusAlert" class="status-alert" role="alert" aria-live="polite">
+          <svg id="statusIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:2px;">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span id="statusMessage"></span>
+        </div>
+
+        <form id="loginForm" method="POST" action="{% url 'core:login' %}">
+          {% csrf_token %}
+          <!-- Usuário Field -->
+          <div class="form-group">
+            <label for="usernameInput" class="form-label">Usuário ou E-mail</label>
+            <div class="input-wrapper">
+              <span class="input-icon-left" aria-hidden="true">
+                <!-- Person SVG -->
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </span>
+              <input type="text" id="usernameInput" name="username" class="custom-input"  placeholder="Ex: dr.roberto ou seu@email.com" autocomplete="username" required>
+            </div>
+            <div id="userError" class="error-msg" aria-live="polite">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              <span>Por favor, digite seu usuário ou e-mail.</span>
+            </div>
+          </div>
+
+          <!-- Senha Field with Toggle -->
+          <div class="form-group">
+            <label for="passwordInput" class="form-label">Senha</label>
+            <div class="input-wrapper">
+              <span class="input-icon-left" aria-hidden="true">
+                <!-- Lock SVG -->
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </span>
+              <input type="password" id="passwordInput"  name="password" class="custom-input with-toggle" placeholder="Digite sua senha" autocomplete="current-password" required >
+              <!-- Eye Toggle Button -->
+              <button type="button" id="togglePasswordBtn" class="toggle-password-btn" aria-label="Mostrar senha" aria-pressed="false" title="Mostrar ou ocultar senha" >
+                <!-- Eye Open Icon (default) -->
+                <svg id="eyeIcon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <!-- Eye Off Icon (hidden initially) -->
+                <svg id="eyeOffIcon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                  <line x1="1" y1="1" x2="23" y2="23"></line>
+                </svg>
+              </button>
+            </div>
+            <div id="passwordError" class="error-msg" aria-live="polite">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              <span>Por favor, informe sua senha institucional.</span>
+            </div>
+          </div>        
+
+          <!-- Submit Button -->
+          <button type="submit" id="submitBtn" class="btn-submit">
+            <span id="btnText">Entrar no Sistema</span>
+          </button>
+        </form>        
+      </div>
+    </section>
+  </main>
+
+  
+  <!-- Modal do Bootstrap 5 -->
+    <div class="modal fade" id="alertaModal" tabindex="-1" aria-labelledby="alertaModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="alertaModalLabel">{{ modal_titulo|default:"Aviso" }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    {{ modal_mensagem }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <!-- Scripts corrigidos (src em vez de scr) -->
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'js/login.js' %}"></script>
+  {% if modal_mensagem %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var meuModal = new bootstrap.Modal(document.getElementById('alertaModal'));
+            meuModal.show();
+        });
+    </script>
+    {% endif %}
+</body>
+</html>
